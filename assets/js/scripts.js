@@ -18,6 +18,10 @@ searchButton.addEventListener("click", function () {
     city = inputElement.value;
     requestURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&exclude=current,minutely,hourly,alerts&appid="+appKey+"&units=imperial"
     console.log("This should say howell " +city);
+    displayElement.innerHTML = "";
+    var displayHeader = document.createElement("h2");
+    displayHeader.textContent = city; // + moment().format("MMM Do, YYYY");
+    displayElement.appendChild(displayHeader);
     weather();
 })
 
@@ -36,6 +40,11 @@ fetch(requestURL)
     var wind = document.createElement("li");
     wind.textContent = "Wind: "+data.wind.speed + " MPH";
     displayElement.appendChild(wind);
+    var hum = document.createElement("li");
+    hum.textContent = "Humidity: "+data.main.humidity;
+    displayElement.appendChild(hum);
+    
+
     lat = data.coord.lat;
     lon = data.coord.lon;
     console.log("lat: " + lat + " lon: " + lon);
