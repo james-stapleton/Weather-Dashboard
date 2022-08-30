@@ -11,9 +11,19 @@ var requestURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&exc
 console.log(requestURL);
 var lat;
 var lon;
+var inputElement = document.querySelector("#city");
+var searchButton = document.querySelector("#search");
+
+searchButton.addEventListener("click", function () {
+    city = inputElement.value;
+    requestURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&exclude=current,minutely,hourly,alerts&appid="+appKey+"&units=imperial"
+    console.log("This should say howell " +city);
+    weather();
+})
 
 
 //current weather
+function weather () {
 fetch(requestURL)
 .then(function (response) {
     return response.json();
@@ -32,11 +42,13 @@ fetch(requestURL)
 
 });
 
-fetch(requestURLforUV)
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        console.log(data);
-    })
+// fetch(requestURLforUV)
+//     .then(function (response) {
+//         return response.json();
+//     })
+//     .then(function (data) {
+//         console.log(data);
+//     })
+
+}
 
