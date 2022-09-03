@@ -2,6 +2,7 @@ var displayElement = document.querySelector("#display");
 var historyListElement = document.querySelector("#history-list");
 var appKey = "b305ebfd8dd85ed3fe2ac8280f681733";
 var city = "New York, NY";
+var dailyCardElement = document.querySelector("#daily");
 
 console.log("First URL");
 
@@ -32,18 +33,19 @@ console.log(cityArray); // Check what's in the array
 searchButton.addEventListener("click", function () {
     city = inputElement.value; // The city the user typed in. Should be added to search history
     //Add city to the requestURL for the first fetch
-    requestURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&exclude=current,minutely,hourly,alerts&appid="+appKey+"&units=imperial"
-    displayElement.innerHTML = ""; //Clear out whatever was in the display
-    var displayHeader = document.createElement("h2"); //Create a header for the city name display
-    displayHeader.textContent = city; // + moment().format("MMM Do, YYYY");
-    displayElement.appendChild(displayHeader); //Add the header to the display element
-    weather(); 
+    weather(city); 
     searchHistory(city);
 })
 
 
 //current weather: Fetch number 1
-function weather () {
+function weather (city) {
+
+    requestURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&exclude=current,minutely,hourly,alerts&appid="+appKey+"&units=imperial"
+    displayElement.innerHTML = ""; //Clear out whatever was in the display
+    var displayHeader = document.createElement("h2"); //Create a header for the city name display
+    displayHeader.textContent = city; // + moment().format("MMM Do, YYYY");
+    displayElement.appendChild(displayHeader); //Add the header to the display element
 fetch(requestURL)
 .then(function (response) {
     return response.json();
@@ -81,7 +83,17 @@ fetch(requestURLDaily)
     })
     .then(function (data) {
         console.log(data);
-        //Create card for 5 days. For loop
+        //! Create card for 5 days. For loop
+        //! This needs to be refactored, reformatted, styled, generally made to actually work
+        for (var i = 0; i<5; i++) {
+            var weatherCard = document.createElement("ul");
+            weatherCard.classList = "grid-x grid-margin-x weather";
+            var dailyTemp = data.list[i].main.temp;
+            var temp = document.createElement("li");
+            temp.textContent = dailyTemp;
+            weatherCard.appendChild(temp);
+            dailyCardElement.appendChild(weatherCard);
+        }
         //Get the daily info I need, plus the day (moment)
     })
 }
@@ -110,7 +122,7 @@ historyListElement.addEventListener("click", function (event) {
     var cityClicked = event.target;
     city = cityClicked.textContent;
     console.log(city);
-    weather(); 
+    weather(city); 
 })
 
 }

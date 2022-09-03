@@ -5,3 +5,8 @@
     justify-content: left;
     border: solid black;
 }
+
+li:hover {
+    color: red;
+    font: larger;
+}
