@@ -1,0 +1,50 @@
+<!-- To Do:
+    Current and future conditions
+    Search history
+    Implement Form with inputs
+    Display city name, the date, an icon representation of weather conditions, 
+        the temperature, the humidity, the wind speed, and the UV index
+    Color code UV index
+    5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
+    WHEN I click on a city in the search history
+    THEN I am again presented with current and future conditions for that city
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="assets/css/styles.css">
+<title>Weather Dashboard</title>
+</head>
+<body>
+    <header><h1>Weather Dashboard</h1></header>
+
+    <div id="input">
+        <label for="city">Search for a city:</label>
+        <input id="city" type="text" name="city" placeholder="Asbury Park">
+        <button id="search">Search</button>
+    </div>
+
+    <div id="display"></div>
+
+    <div id="daily"></div>
+    <div>
+        <button id="search"></button>
+    </div>
+
+    <div id="history">
+        <ul id="history-list"></ul>
+    </div>
+
+<script src="./assets/js/scripts copy.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+</html>
