@@ -1,3 +1,7 @@
+header {
+    background-color: rgb(134, 134, 245);
+}
+
 #display {
     width: 70%;
     float: right;
@@ -6,16 +10,27 @@
     border: solid black;
 }
 
+li {
+    background-color: rgb(134, 134, 245);
+}
+
 li:hover {
     color: red;
     font: larger;
+    cursor: pointer;
 }
 
 #search-bar {
     float: left;
 }
 
-.col-2 {
+.day {
     display: flex;
-    color: blue;
+    border: solid black;
+    padding: 10px;
+    margin: 10px;
+}
+
+h3 {
+    float: left;
 }

@@ -19,27 +19,25 @@ var searchFormEl = document.querySelector("#search-form");
 
 searchFormEl.addEventListener("submit", handleSearchFormSubmit);
 
-function getCurrentWeather(city) {
-    const newCity = document.createElement("li");
-    newCity.textContent = city;
-    historyEl.appendChild(newCity);
-    fetch(
-      "https://api.openweathermap.org/data/2.5/weather?q=" +
-        city +
-        "&appid=" +
-        apiKey +
-        "&units=imperial"
-    )
-      .then(function (response) {
-        return response.json();
-      })
+// function getCurrentWeather(city) {
+//     console.log("getCurrentWeather function");
+//     fetch(
+//       "https://api.openweathermap.org/data/2.5/weather?q=" +
+//         city +
+//         "&appid=" +
+//         apiKey +
+//         "&units=imperial"
+//     )
+//       .then(function (response) {
+//         return response.json();
+//       })
   
-      .then((data) => {
-        console.log(data);
-        const {temp, pressure, humidity} = data.main;1
-        console.log(temp, pressure, humidity);
-      });  
-  }
+//       .then((data) => {
+//         console.log(data);
+//         const {temp, pressure, humidity} = data.main;1
+//         console.log(temp, pressure, humidity);
+//       });  
+//   }
 
   function handleSearchFormSubmit(e) {
     e.preventDefault();
@@ -50,33 +48,49 @@ function getCurrentWeather(city) {
       console.log("Invalid Input!");
       return;
     }
-    getCurrentWeather(searchInputVal);
+    document.querySelector('#search-input').value="";
+    weather(searchInputVal);
   }
 
 
   function weather (city) {
 
-    requestURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&exclude=current,minutely,hourly,alerts&appid="+apiKey+"&units=imperial"
+    requestURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&exclude=current,minutely,hourly,alerts&appid="+apiKey+"&units=imperial";
+    const newCity = document.createElement("li");
+    newCity.textContent = city;
+
+    if (!cityArray.includes(city)) {
+    cityArray.unshift(city);
+    populateSearchHistory(cityArray);
+    } 
+
     displayElement.innerHTML = ""; //Clear out whatever was in the display
     var displayHeader = document.createElement("h2"); //Create a header for the city name display
     displayHeader.textContent = city; // + moment().format("MMM Do, YYYY");
     displayElement.appendChild(displayHeader); //Add the header to the display element
+    
 fetch(requestURL)
 .then(function (response) {
     return response.json();
 })
 .then(function (data) {
-    console.log(data);
+    console.log(" First fetch data",data);
+    const iconText = data.weather[0].icon;
+            console.log('icon:', iconText)
+            const iconURL = `http://openweathermap.org/img/wn/${iconText}@2x.png`;
+            const iconEl = document.createElement("img");
+            iconEl.src = iconURL;
+            displayElement.appendChild(iconEl);
     //Get and Add the temperature to the display
-    var temp = document.createElement("li");
+    var temp = document.createElement("p");
     temp.textContent = "Temperature: "+data.main.temp + " Degrees F";
     displayElement.appendChild(temp);
     //Get and add the wind speed to the display
-    var wind = document.createElement("li");
+    var wind = document.createElement("p");
     wind.textContent = "Wind: "+data.wind.speed + " MPH";
     displayElement.appendChild(wind);
     //Get and add the humidity to the display
-    var hum = document.createElement("li");
+    var hum = document.createElement("p");
     hum.textContent = "Humidity: "+data.main.humidity;
     displayElement.appendChild(hum);
     //Get the latitude and longitude for the second fetch
@@ -88,7 +102,7 @@ fetch(requestURL)
 });
 
 function request(lat, lon) {
-    var requestURLDaily = "https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&appid="+apiKey;
+    var requestURLDaily = "https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&units=imperial&appid="+apiKey;
 
 fetch(requestURLDaily)
     .then(function (response) {
@@ -103,27 +117,34 @@ fetch(requestURLDaily)
         for (var i = 0; i<5; i++) {
             const cardID = `#box${i+1}`;
             const dailyCardElement = document.querySelector(cardID);
+            dailyCardElement.innerHTML = "";
             var weatherCard = document.createElement("ul");
             // weatherCard.classList = "grid-x grid-margin-x weather";
-            const currentDate = Date.now();
+            const currentDate = new Date();
             console.log("date",currentDate);
             const month = currentDate.getMonth();
-            const day = currentDate.getDay();
+            const day = currentDate.getDate() + i + 1;
             const year = currentDate.getFullYear();
-            const dateLi = document.createElement('li');
-            dateLi.textContent = `${dailyDate.month} ${dailyDate.day} ${dailyDate.year}`;
+            const dateLi = document.createElement('h3');
+            dateLi.textContent = `${month}/${day}/${year}`;
             weatherCard.appendChild(dateLi);
+            const iconText = data.list[i].weather[0].icon;
+            console.log('icon:', iconText)
+            const iconURL = `http://openweathermap.org/img/wn/${iconText}@2x.png`;
+            const iconEl = document.createElement("img");
+            iconEl.src = iconURL;
+            weatherCard.appendChild(iconEl);
             const dailyTemp = data.list[i].main.temp;
-            var temp = document.createElement("li");
-            temp.textContent = `Temperature: ${dailyTemp}`;
+            var temp = document.createElement("p");
+            temp.textContent = `Temperature: ${dailyTemp} Degrees F`;
             weatherCard.appendChild(temp);
             const dailyhumidity = data.list[i].main.humidity;
-            var humidity = document.createElement("li");
-            humidity.textContent = `Humidity: ${dailyhumidity}`;
+            var humidity = document.createElement("p");
+            humidity.textContent = `Humidity: ${dailyhumidity}%`;
             weatherCard.appendChild(humidity);
             const dailywind = data.list[i].wind.speed;
-            var wind = document.createElement("li");
-            wind.textContent = `Wind speed: ${dailywind}`;
+            var wind = document.createElement("p");
+            wind.textContent = `Wind speed: ${dailywind}MPH`;
             weatherCard.appendChild(wind);
             dailyCardElement.appendChild(weatherCard);
         }
@@ -134,18 +155,22 @@ fetch(requestURLDaily)
 
 //  ----------------------------------------------Weather search
 
-function searchHistory(city){
-    pushCity = ""+city;
-    console.log("Search history city: " +city);
-    console.log("pushCity = " + pushCity);
-    console.log("Is my array the null problem??? " +cityArray);
-    cityArray.unshift(pushCity);
-    localStorage.setItem("cities",JSON.stringify (cityArray));
-    populateSearchHistory(cityArray);
-}
+// function searchHistory(city){
+//     pushCity = ""+city;
+//     console.log("Search history city: " +city);
+//     console.log("pushCity = " + pushCity);
+//     console.log("Is my array the null problem??? " +cityArray);
+//     if (!cityArray.includes(city)) {
+//         cityArray.unshift(pushCity);
+//     localStorage.setItem("cities",JSON.stringify (cityArray));
+//     populateSearchHistory(cityArray);
+//     }
+    
+// }
 
 
 function populateSearchHistory(cityArray) {
+    console.log("This is the array of cities to add" ,cityArray);
     historyEl.innerHTML = ""; //clear current history
     // for loop to append each element in array to the ul
     //! Event delegation to make each list item clickable. Remember some hover effects and cursor
