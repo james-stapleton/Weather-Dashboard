@@ -19,26 +19,6 @@ var searchFormEl = document.querySelector("#search-form");
 
 searchFormEl.addEventListener("submit", handleSearchFormSubmit);
 
-// function getCurrentWeather(city) {
-//     console.log("getCurrentWeather function");
-//     fetch(
-//       "https://api.openweathermap.org/data/2.5/weather?q=" +
-//         city +
-//         "&appid=" +
-//         apiKey +
-//         "&units=imperial"
-//     )
-//       .then(function (response) {
-//         return response.json();
-//       })
-  
-//       .then((data) => {
-//         console.log(data);
-//         const {temp, pressure, humidity} = data.main;1
-//         console.log(temp, pressure, humidity);
-//       });  
-//   }
-
   function handleSearchFormSubmit(e) {
     e.preventDefault();
     var searchInputVal = document.querySelector("#search-input").value;
@@ -61,6 +41,7 @@ searchFormEl.addEventListener("submit", handleSearchFormSubmit);
 
     if (!cityArray.includes(city)) {
     cityArray.unshift(city);
+    localStorage.setItem("cities", JSON.stringify(cityArray));
     populateSearchHistory(cityArray);
     } 
 
