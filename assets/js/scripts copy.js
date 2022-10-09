@@ -1,6 +1,6 @@
 var displayElement = document.querySelector("#display");
 var historyListElement = document.querySelector("#history-list");
-var appKey = "b305ebfd8dd85ed3fe2ac8280f681733";
+var appKey = "d91f911bcf2c0f925fb6535547a5ddc9";
 var city = "New York, NY";
 var dailyCardElement = document.querySelector("#daily");
 

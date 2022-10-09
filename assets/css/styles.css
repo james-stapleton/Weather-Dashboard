@@ -10,3 +10,12 @@ li:hover {
     color: red;
     font: larger;
 }
+
+#search-bar {
+    float: left;
+}
+
+.col-2 {
+    display: flex;
+    color: blue;
+}
